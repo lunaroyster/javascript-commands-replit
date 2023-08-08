@@ -1,0 +1,30 @@
+{
+  "name": "Javascript Commands",
+  "description": "Commands for working with Javascript",
+  "background": {
+    "page": "index.html"
+  },
+  "icon": "/icons/javascript.png",
+  "longDescription": "This extension adds Javascript related commands to your workspace. For example: running scripts, managing packages",
+  "scopes": [
+
+    {
+      "name": "experimental-api",
+      "reason": "This uses some unstable / experimental APIs"
+    },
+
+    {
+    "name": "write-exec",
+    "reason": "This runs commands in your container"
+  }
+
+  ],
+  "coverImages": [
+
+    {
+      "path": "cover.png",
+      "label": "the npm install command"
+    }
+
+  ]
+}

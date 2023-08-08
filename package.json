@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test": "echo 0",
+    "lint": "npx prettier --write script.js"
+  },
+  "name": "js-commands",
+  "description": "This is an HTML/CSS/JS Extension Starter which includes a few simple API calls.",
+  "version": "1.0.0",
+  "main": "script.js",
+  "author": "",
+  "license": "ISC"
+}

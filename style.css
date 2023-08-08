@@ -1,0 +1,24 @@
+body, html {
+  background-color: #1C2333;
+	color: white;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#container {
+  padding: 16px;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 8px;
+  background: transparent;
+  color: white;
+  border-color: white;
+}
