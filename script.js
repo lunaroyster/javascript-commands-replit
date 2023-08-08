@@ -135,15 +135,17 @@ async function main() {
       }
 
       if (!packageJsonExistsRef.current) {
+        const packager = await getPackageManagerName();
+        
         return [
           Command({
             data: {
-              label: "npm init",
-              description: "initialize npm in this repl",
+              label: `${packager} init`,
+              description: "initialize package.json in this repl",
               icon: "icons/npm.svg",
             },
             run: async () => {
-              await replit.extensionPort.internal.execInShell(`npm init`)
+              await replit.extensionPort.internal.execInShell(`${packager} init`)
             }
           })
         ]
@@ -179,9 +181,10 @@ async function main() {
                   icon: "icons/npm.svg",
                 },
                 run: async () => {
+                  const packager = await getPackageManagerName();
                   
                   await replit.extensionPort.internal.execInShell(
-                    `npm run ${name}`,
+                    `${packager} run ${name}`,
                   );
                 },
               }),
@@ -191,7 +194,7 @@ async function main() {
         Command({
           data: {
             label: "install",
-            description: "install an npm package",
+            description: "install a package from the npm registry",
             icon: "icons/download.png"
           },
           commands: async ({active, search}) => {

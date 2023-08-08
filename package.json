@@ -8,5 +8,6 @@
   "version": "1.0.0",
   "main": "script.js",
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {}
 }
