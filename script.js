@@ -20,21 +20,27 @@ function Command({ data, commands, run }) {
   return replit.proxy(cmd);
 }
 
-const cache = {}
+let lastRequestId = 0;
+const cache = { '': [] };
+
+const sleep = n => new Promise(resolve => setTimeout(resolve, n));
+
 async function getNpmPackages(search) {
+  const thisRequestId = ++lastRequestId;
+	
   if (!cache[search]) {
+    await sleep(300);
+    if (thisRequestId !== lastRequestId) return [];
+
     // fetch npm packages from the registry on the client side
     const res = await fetch(`https://registry.npmjs.org/-/v1/search?text=${search}`);
-
-    console.log(res)
     const json = await res.json();
-  
+
     cache[search] = json.objects;
   }
 
   return cache[search];
 }
-
 async function getPackageManagerName() {
   const [yarnRes, pnpmRes, bunRes] = await Promise.all(['yarn.lock', 'pnpm-lock.yaml', 'bun.lockb'].map(f => replit.fs.readFile(f)));
 
@@ -136,7 +142,7 @@ async function main() {
 
       if (!packageJsonExistsRef.current) {
         const packager = await getPackageManagerName();
-        
+
         return [
           Command({
             data: {
@@ -150,7 +156,7 @@ async function main() {
           })
         ]
       }
-      
+
       return [
         Command({
           data: {
@@ -182,7 +188,7 @@ async function main() {
                 },
                 run: async () => {
                   const packager = await getPackageManagerName();
-                  
+
                   await replit.extensionPort.internal.execInShell(
                     `${packager} run ${name}`,
                   );
@@ -197,7 +203,7 @@ async function main() {
             description: "install a package from the npm registry",
             icon: "icons/download.png"
           },
-          commands: async ({active, search}) => {
+          commands: async ({ active, search }) => {
             if (!active) {
               return []
             }
@@ -213,11 +219,11 @@ async function main() {
                 run: async () => {
                   const packager = await getPackageManagerName();
 
-                  
-                  await replit.extensionPort.internal.execInShell(installPackageCmd(packager, pkg.package.name))
+                  await replit.extensionPort.internal.execInShell(installPackageCmd(packager, pkg.package.name));
                 }
               })
             })
+
           }
         }),
         Command({
@@ -226,7 +232,7 @@ async function main() {
             description: "uninstall an installed package",
             icon: "icons/trash.png",
           },
-          commands: async ({active}) => {
+          commands: async ({ active }) => {
             if (!active) {
               return []
             }
@@ -244,7 +250,7 @@ async function main() {
                 },
                 run: async () => {
                   const packager = await getPackageManagerName();
-                  
+
                   await replit.extensionPort.internal.execInShell(uninstallPackageCmd(packager, key))
                 }
               })
